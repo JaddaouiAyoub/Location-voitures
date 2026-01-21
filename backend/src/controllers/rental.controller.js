@@ -1,5 +1,6 @@
 const { successResponse, errorResponse } = require('../utils/response');
 const RentalModel = require('../models/rental.model');
+const InvoiceService = require('../services/invoice.service');
 
 /**
  * Rental Controller
@@ -19,6 +20,14 @@ const RentalController = {
                 start_date,
                 end_date
             });
+
+            // Generate invoice automatically after creation
+            try {
+                await InvoiceService.generateInvoice(rental.id);
+            } catch (invoiceError) {
+                console.error('Invoice generation failed:', invoiceError);
+                // Don't fail the rental creation if invoice fails
+            }
 
             return successResponse(res, rental, 'Rental created successfully', 201);
         } catch (error) {

@@ -12,6 +12,8 @@ const InvoiceController = {
      */
     async downloadInvoice(req, res, next) {
         try {
+            const fs = require('fs');
+            const path = require('path');
             const rentalId = req.params.rentalId;
 
             // Get rental to check ownership
@@ -26,14 +28,20 @@ const InvoiceController = {
                 return errorResponse(res, 'Unauthorized access', 403);
             }
 
-            // Generate PDF
-            const pdfDoc = await InvoiceService.generateInvoice(rentalId);
+            const fileName = `invoice-${rentalId}.pdf`;
+            const filePath = path.join(__dirname, '../../public/invoices', fileName);
 
             // Set response headers
             res.setHeader('Content-Type', 'application/pdf');
-            res.setHeader('Content-Disposition', `attachment; filename=invoice-${rentalId}.pdf`);
+            res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
 
-            // Pipe PDF to response
+            // If file exists, stream it
+            if (fs.existsSync(filePath)) {
+                return fs.createReadStream(filePath).pipe(res);
+            }
+
+            // If not, generate it, store it, and stream it
+            const pdfDoc = await InvoiceService.generateInvoice(rentalId);
             pdfDoc.pipe(res);
 
         } catch (error) {

@@ -63,13 +63,13 @@ const loginValidation = [
  */
 const profileUpdateValidation = [
     body('name')
-        .trim()
-        .notEmpty()
-        .withMessage('Name is required'),
+        .trim(),
+        // .notEmpty()
+        // .withMessage('Name is required'),
     body('phone')
-        .optional()
-        .isMobilePhone()
-        .withMessage('Valid phone number required'),
+        .optional(),
+        // .isMobilePhone()
+        // .withMessage('Valid phone number required'),
     handleValidationErrors
 ];
 

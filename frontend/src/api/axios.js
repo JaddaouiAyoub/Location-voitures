@@ -29,16 +29,20 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config;
 
         // If error is 401 and we haven't tried to refresh yet
-        if (error.response?.status === 401 && !originalRequest._retry) {
+        // AND it's not a login request (to avoid refresh loop/page reload on wrong credentials)
+        if (error.response?.status === 401 && !originalRequest._retry && !originalRequest.url.includes('/auth/login')) {
             originalRequest._retry = true;
 
             try {
                 const refreshToken = localStorage.getItem('refreshToken');
 
                 if (!refreshToken) {
-                    // No refresh token, redirect to login
+                    // No refresh token, clear and don't redirect to avoiding clearing login page state
                     localStorage.clear();
-                    window.location.href = '/login';
+                    // Optional: redirect to login only if NOT already on login page
+                    if (window.location.pathname !== '/login') {
+                        window.location.href = '/login';
+                    }
                     return Promise.reject(error);
                 }
 
@@ -57,7 +61,9 @@ axiosInstance.interceptors.response.use(
             } catch (refreshError) {
                 // Refresh failed, redirect to login
                 localStorage.clear();
-                window.location.href = '/login';
+                if (window.location.pathname !== '/login') {
+                    window.location.href = '/login';
+                }
                 return Promise.reject(refreshError);
             }
         }

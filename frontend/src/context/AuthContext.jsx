@@ -45,10 +45,10 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('refreshToken', refreshToken);
             setUser(user);
 
-            toast.success('Login successful!');
+            toast.success('Connexion réussie !');
             return user;
         } catch (error) {
-            const message = error.response?.data?.message || 'Login failed';
+            const message = error.response?.data?.message || 'Échec de la connexion';
             toast.error(message);
             throw error;
         }
@@ -63,10 +63,10 @@ export const AuthProvider = ({ children }) => {
             localStorage.setItem('refreshToken', refreshToken);
             setUser(user);
 
-            toast.success('Registration successful!');
+            toast.success('Compte créé avec succès !');
             return user;
         } catch (error) {
-            const message = error.response?.data?.message || 'Registration failed';
+            const message = error.response?.data?.message || 'Échec de l\'inscription';
             toast.error(message);
             throw error;
         }
@@ -75,17 +75,18 @@ export const AuthProvider = ({ children }) => {
     const logout = () => {
         localStorage.clear();
         setUser(null);
-        toast.success('Logged out successfully');
+        toast.success('Déconnexion réussie');
     };
 
     const updateUserProfile = async (profileData) => {
         try {
             const response = await authAPI.updateProfile(profileData);
             setUser(response.data);
-            toast.success('Profile updated successfully!');
+            toast.success('Profil mis à jour avec succès !');
             return response.data;
         } catch (error) {
-            const message = error.response?.data?.message || 'Profile update failed';
+            console.error('Profile update failed:', error);
+            const message = error.response?.data?.message || 'Mise à jour du profil échouée';
             toast.error(message);
             throw error;
         }

@@ -150,27 +150,25 @@ const CarModel = {
      * @returns {Boolean} True if available
      */
     async isAvailable(carId, startDate, endDate) {
-        // Check if car exists and is in Available status
+        // Check if car exists and is not in Maintenance status
         const car = await this.findById(carId);
-        if (!car || car.status !== 'Available') {
+        if (!car || car.status === 'Maintenance') {
             return false;
         }
 
         // Check for overlapping rentals
+        // A rental overlaps if: ExistingStart <= NewEnd AND ExistingEnd >= NewStart
         const query = `
       SELECT COUNT(*) as count
       FROM rentals
       WHERE car_id = ?
-        AND status = 'Active'
-        AND (
-          (start_date <= ? AND end_date >= ?)
-          OR (start_date <= ? AND end_date >= ?)
-          OR (start_date >= ? AND end_date <= ?)
-        )
+        AND status IN ('Active', 'Completed') -- Only count confirmed rentals
+        AND NOT (status = 'Cancelled')
+        AND (start_date <= ? AND end_date >= ?)
     `;
 
         const [rows] = await db.execute(query, [
-            carId, startDate, startDate, endDate, endDate, startDate, endDate
+            carId, endDate, startDate
         ]);
 
         return rows[0].count === 0;

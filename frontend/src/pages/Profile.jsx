@@ -37,107 +37,119 @@ const Profile = () => {
     };
 
     return (
-        <div className="max-w-2xl mx-auto">
-            <h1 className="text-3xl font-bold text-gray-900 mb-8">Profile Settings</h1>
+        <div className="fade-in max-w-2xl mx-auto px-4 py-8">
+            <h1 className="text-4xl font-extrabold text-gray-900 mb-10 tracking-tight">Paramètres du Profil</h1>
 
             {/* Profile Information */}
-            <div className="bg-white rounded-xl shadow-md p-6 mb-6">
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-semibold">Personal Information</h2>
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8 mb-10">
+                <div className="flex items-center justify-between mb-8">
+                    <div>
+                        <h2 className="text-xl font-bold text-gray-900">Informations Personnelles</h2>
+                        <p className="text-sm text-gray-500 mt-1">Mettez à jour vos coordonnées et détails de compte.</p>
+                    </div>
                     <button
                         onClick={() => setEditing(!editing)}
-                        className="text-primary-600 hover:text-primary-700 font-medium"
+                        className={`px-4 py-2 rounded-lg font-bold transition-all ${editing ? 'text-gray-500 hover:text-gray-700 bg-gray-50' : 'text-primary-600 hover:text-primary-700 bg-primary-50'
+                            }`}
                     >
-                        {editing ? 'Cancel' : 'Edit'}
+                        {editing ? 'Annuler' : 'Modifier'}
                     </button>
                 </div>
 
-                <form onSubmit={handleUpdateProfile} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Name</label>
-                        <input
-                            type="text"
-                            value={profileData.name}
-                            onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
-                            disabled={!editing}
-                            className="w-full px-4 py-2 border rounded-lg disabled:bg-gray-100"
-                        />
+                <form onSubmit={handleUpdateProfile} className="space-y-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2">Nom Complet</label>
+                            <input
+                                type="text"
+                                value={profileData.name}
+                                onChange={(e) => setProfileData({ ...profileData, name: e.target.value })}
+                                disabled={!editing}
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all outline-none disabled:bg-gray-50 disabled:text-gray-500"
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-bold text-gray-700 mb-2">Rôle</label>
+                            <input
+                                type="text"
+                                value={user?.role === 'ADMIN' ? 'Administrateur' : user?.role === 'AGENT' ? 'Agent' : 'Client'}
+                                disabled
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-500"
+                            />
+                        </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">Adresse Email</label>
                         <input
                             type="email"
                             value={user?.email}
                             disabled
-                            className="w-full px-4 py-2 border rounded-lg bg-gray-100"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-gray-50 text-gray-500"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">Téléphone</label>
                         <input
                             type="tel"
                             value={profileData.phone}
                             onChange={(e) => setProfileData({ ...profileData, phone: e.target.value })}
                             disabled={!editing}
-                            className="w-full px-4 py-2 border rounded-lg disabled:bg-gray-100"
-                        />
-                    </div>
-
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                        <input
-                            type="text"
-                            value={user?.role}
-                            disabled
-                            className="w-full px-4 py-2 border rounded-lg bg-gray-100"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 transition-all outline-none disabled:bg-gray-50 disabled:text-gray-500"
+                            placeholder="+33 6 00 00 00 00"
                         />
                     </div>
 
                     {editing && (
                         <button
                             type="submit"
-                            className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700"
+                            className="w-full bg-primary-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-primary-700 shadow-lg hover:shadow-primary-100 transition-all"
                         >
-                            Save Changes
+                            Enregistrer les Modifications
                         </button>
                     )}
                 </form>
             </div>
 
             {/* Change Password */}
-            <div className="bg-white rounded-xl shadow-md p-6">
-                <h2 className="text-xl font-semibold mb-6">Change Password</h2>
-                <form onSubmit={handleChangePassword} className="space-y-4">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+                <div className="mb-8">
+                    <h2 className="text-xl font-bold text-gray-900">Sécurité</h2>
+                    <p className="text-sm text-gray-500 mt-1">Changez votre mot de passe pour sécuriser votre compte.</p>
+                </div>
+
+                <form onSubmit={handleChangePassword} className="space-y-6">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Current Password</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">Mot de passe actuel</label>
                         <input
                             type="password"
                             value={passwordData.currentPassword}
                             onChange={(e) => setPasswordData({ ...passwordData, currentPassword: e.target.value })}
-                            className="w-full px-4 py-2 border rounded-lg"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition-all"
                             required
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">New Password</label>
+                        <label className="block text-sm font-bold text-gray-700 mb-2">Nouveau mot de passe</label>
                         <input
                             type="password"
                             minLength={6}
                             value={passwordData.newPassword}
                             onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })}
-                            className="w-full px-4 py-2 border rounded-lg"
+                            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 outline-none transition-all"
                             required
                         />
+                        <p className="text-xs text-gray-500 mt-2">Le mot de passe doit contenir au moins 6 caractères.</p>
                     </div>
 
                     <button
                         type="submit"
-                        className="w-full bg-primary-600 text-white py-3 rounded-lg hover:bg-primary-700"
+                        className="w-full bg-gray-900 text-white py-4 rounded-xl font-bold text-lg hover:bg-black shadow-lg transition-all"
                     >
-                        Change Password
+                        Changer le mot de passe
                     </button>
                 </form>
             </div>

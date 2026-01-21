@@ -11,6 +11,9 @@ const InvoiceService = {
      * @returns {PDFDocument} PDF document stream
      */
     async generateInvoice(rentalId) {
+        const fs = require('fs');
+        const path = require('path');
+
         // Get rental details
         const rental = await RentalModel.findById(rentalId);
 
@@ -18,8 +21,21 @@ const InvoiceService = {
             throw new Error('Rental not found');
         }
 
+        // Ensure storage directory exists
+        const storageDir = path.join(__dirname, '../../public/invoices');
+        if (!fs.existsSync(storageDir)) {
+            fs.mkdirSync(storageDir, { recursive: true });
+        }
+
+        const fileName = `invoice-${rentalId}.pdf`;
+        const filePath = path.join(storageDir, fileName);
+
         // Create PDF document
         const doc = new PDFDocument({ margin: 50 });
+
+        // Pipe to file storage
+        const writeStream = fs.createWriteStream(filePath);
+        doc.pipe(writeStream);
 
         // Company Header
         doc.fontSize(20)
@@ -95,7 +111,7 @@ const InvoiceService = {
         doc.font('Helvetica')
             .text(`Car Rental (${rental.price_per_day}€/day)`, col1, tableTop + 25)
             .text(days.toString(), col2, tableTop + 25)
-            .text(`${rental.total_price.toFixed(2)}€`, col3, tableTop + 25);
+            .text(`${Number(rental.total_price).toFixed(2)}€`, col3, tableTop + 25);
 
         // Subtotal
         const subtotalY = tableTop + 60;
@@ -105,16 +121,16 @@ const InvoiceService = {
 
         doc.font('Helvetica-Bold')
             .text('Subtotal:', col2, subtotalY + 10)
-            .text(`${rental.total_price.toFixed(2)}€`, col3, subtotalY + 10);
+            .text(`${Number(rental.total_price).toFixed(2)}€`, col3, subtotalY + 10);
 
         // VAT (20%)
-        const vat = rental.total_price * 0.20;
+        const vat = Number(rental.total_price) * 0.20;
         doc.font('Helvetica')
             .text('VAT (20%):', col2, subtotalY + 30)
             .text(`${vat.toFixed(2)}€`, col3, subtotalY + 30);
 
         // Total
-        const total = rental.total_price + vat;
+        const total = Number(rental.total_price) + vat;
         doc.moveTo(col1, subtotalY + 50)
             .lineTo(550, subtotalY + 50)
             .stroke();

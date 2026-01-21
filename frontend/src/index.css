@@ -635,3 +635,73 @@ select:focus {
   box-shadow: 0 0 0 2px var(--color-primary-600);
   border-color: var(--color-primary-600);
 }
+
+/* Z-Index */
+.z-40 {
+  z-index: 40;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+/* Sticky & Fixed */
+.sticky {
+  position: sticky;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+/* Backdrop Blur */
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.bg-white\/80 {
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+/* Margins for Fixed Sidebar */
+.ml-64 {
+  margin-left: 16rem;
+}
+
+.ml-20 {
+  margin-left: 5rem;
+}
+
+/* Hidden */
+.hidden {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .sm\:block {
+    display: block;
+  }
+}
+
+/* Tracking */
+.tracking-wider {
+  letter-spacing: 0.05em;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+/* Shadow */
+.shadow-inner {
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+}

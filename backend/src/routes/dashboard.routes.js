@@ -7,6 +7,6 @@ const { verifyToken, requireRole } = require('../middlewares/auth.middleware');
  * Dashboard Routes (ADMIN only)
  */
 
-router.get('/stats', verifyToken, requireRole('ADMIN'), DashboardController.getStatistics);
+router.get('/stats', verifyToken, requireRole('ADMIN', 'AGENT'), DashboardController.getStatistics);
 
 module.exports = router;

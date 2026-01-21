@@ -1,12 +1,12 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation, Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
 
 const MainLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(true);
-    const { user, logout, isAdmin, canManageCars } = useAuth();
+    const { user, logout } = useAuth();
     const navigate = useNavigate();
+    const location = useLocation();
 
     const handleLogout = () => {
         logout();
@@ -14,11 +14,11 @@ const MainLayout = () => {
     };
 
     const menuItems = [
-        { name: 'Dashboard', path: '/', icon: '🏠', roles: ['ADMIN'] },
-        { name: 'Cars', path: '/cars', icon: '🚗', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
-        { name: 'Map', path: '/map', icon: '🗺️', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
-        { name: 'Rentals', path: '/rentals', icon: '📋', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
-        { name: 'Profile', path: '/profile', icon: '👤', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
+        { name: 'Analytique', path: '/dashboard', icon: '📊', roles: ['ADMIN', 'AGENT'] },
+        { name: 'Flotte', path: '/cars', icon: '🚗', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
+        { name: 'Carte', path: '/map', icon: '🗺️', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
+        { name: 'Mes Locations', path: '/rentals', icon: '📋', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
+        { name: 'Profil', path: '/profile', icon: '👤', roles: ['ADMIN', 'AGENT', 'CLIENT'] },
     ];
 
     const filteredMenuItems = menuItems.filter(item => item.roles.includes(user?.role));
@@ -26,7 +26,7 @@ const MainLayout = () => {
     return (
         <div className="min-h-screen bg-gray-50 flex">
             {/* Sidebar */}
-            <aside className={`bg-white border-r border-gray-200 transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
+            <aside className={`fixed left-0 top-0 bottom-0 bg-white border-r border-gray-200 transition-all duration-300 z-50 ${sidebarOpen ? 'w-64' : 'w-20'}`}>
                 <div className="p-6">
                     <h1 className={`font-bold text-primary-600 ${sidebarOpen ? 'text-2xl' : 'text-lg'}`}>
                         {sidebarOpen ? '🚗 CarRental' : '🚗'}
@@ -38,7 +38,8 @@ const MainLayout = () => {
                         <Link
                             key={item.path}
                             to={item.path}
-                            className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                            className={`flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary-50 hover:text-primary-600 transition-colors ${location.pathname === item.path ? 'bg-primary-50 text-primary-600 font-bold' : ''
+                                }`}
                         >
                             <span className="text-xl">{item.icon}</span>
                             {sidebarOpen && <span className="font-medium">{item.name}</span>}
@@ -52,15 +53,15 @@ const MainLayout = () => {
                         className="flex items-center gap-3 px-4 py-3 w-full rounded-lg hover:bg-red-50 hover:text-red-600 transition-colors"
                     >
                         <span className="text-xl">🚪</span>
-                        {sidebarOpen && <span className="font-medium">Logout</span>}
+                        {sidebarOpen && <span className="font-medium">Déconnexion</span>}
                     </button>
                 </div>
             </aside>
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col">
+            <div className={`flex-1 flex flex-col transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-20'}`}>
                 {/* Header */}
-                <header className="bg-white border-b border-gray-200 px-8 py-4">
+                <header className="bg-white/80 backdrop-blur-md border-b border-gray-200 px-8 py-4 sticky top-0 z-40">
                     <div className="flex items-center justify-between">
                         <button
                             onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -72,11 +73,11 @@ const MainLayout = () => {
                         </button>
 
                         <div className="flex items-center gap-4">
-                            <div className="text-right">
+                            <div className="text-right hidden sm:block">
                                 <p className="font-semibold text-gray-900">{user?.name}</p>
-                                <p className="text-sm text-gray-500">{user?.role}</p>
+                                <p className="text-xs font-bold text-primary-600 uppercase tracking-wider">{user?.role}</p>
                             </div>
-                            <div className="w-10 h-10 rounded-full bg-primary-600 text-white flex items-center justify-center font-semibold">
+                            <div className="w-10 h-10 rounded-full bg-primary-600 text-white flex items-center justify-center font-semibold shadow-inner border-2 border-primary-50">
                                 {user?.name?.charAt(0).toUpperCase()}
                             </div>
                         </div>
@@ -84,7 +85,7 @@ const MainLayout = () => {
                 </header>
 
                 {/* Page Content */}
-                <main className="flex-1 p-8 overflow-auto">
+                <main className="flex-1 p-8">
                     <Outlet />
                 </main>
             </div>
