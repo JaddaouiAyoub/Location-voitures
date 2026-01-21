@@ -10,15 +10,15 @@ const CarModel = {
      * @returns {Object} Created car
      */
     async create(carData) {
-        const { brand, model, year, price_per_day, status = 'Available', image_url, latitude, longitude } = carData;
+        const { brand, model, year, price_per_day, status = 'Available', image_url} = carData;
 
         const query = `
-      INSERT INTO cars (brand, model, year, price_per_day, status, image_url, latitude, longitude)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO cars (brand, model, year, price_per_day, status, image_url)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
 
         const [result] = await db.execute(query, [
-            brand, model, year, price_per_day, status, image_url, latitude, longitude
+            brand, model, year, price_per_day, status, image_url
         ]);
 
         return await this.findById(result.insertId);
@@ -90,12 +90,12 @@ const CarModel = {
         const query = `
       UPDATE cars
       SET brand = ?, model = ?, year = ?, price_per_day = ?, status = ?, 
-          image_url = ?, latitude = ?, longitude = ?, updated_at = CURRENT_TIMESTAMP
+          image_url = ?, updated_at = CURRENT_TIMESTAMP
       WHERE id = ?
     `;
 
         await db.execute(query, [
-            brand, model, year, price_per_day, status, image_url, latitude, longitude, id
+            brand, model, year, price_per_day, status, image_url, id
         ]);
 
         return await this.findById(id);
