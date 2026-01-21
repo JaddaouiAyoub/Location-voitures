@@ -84,7 +84,7 @@ A complete, production-ready car rental management application built with modern
 
 ```bash
 git clone <repository-url>
-cd test4
+cd  Location-voitures
 ```
 
 ### 2. Database Setup
@@ -172,7 +172,7 @@ VITE_API_URL=http://localhost:5000/api
 ## 📁 Project Structure
 
 ```
-test4/
+ Location-voitures/
 ├── backend/
 │   ├── src/
 │   │   ├── config/         # Database & JWT configuration
