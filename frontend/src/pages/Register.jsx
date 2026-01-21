@@ -27,61 +27,75 @@ const Register = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4 py-12">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 fade-in">
+        <div
+            className="min-h-screen flex items-center justify-center px-4 py-12"
+            style={{
+                backgroundImage: 'url(https://images.unsplash.com/photo-1485291571150-772bcfc10da5?w=1920&q=80)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                position: 'relative'
+            }}
+        >
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-gray-900" style={{ opacity: 0.75 }}></div>
+
+            <div className="max-w-4xl w-full bg-white rounded-2xl shadow-2xl p-8 fade-in relative" style={{ zIndex: 10 }}>
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
                     <p className="text-gray-600">Join our car rental service</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                        <input
-                            type="text"
-                            required
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                            placeholder="John Doe"
-                        />
-                    </div>
+                <form onSubmit={handleSubmit}>
+                    {/* Two Column Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                            <input
+                                type="text"
+                                required
+                                value={formData.name}
+                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                                placeholder="John Doe"
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <input
-                            type="email"
-                            required
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                            placeholder="your@email.com"
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input
+                                type="email"
+                                required
+                                value={formData.email}
+                                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                                placeholder="your@email.com"
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Phone (Optional)</label>
-                        <input
-                            type="tel"
-                            value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                            placeholder="+33 6 12 34 56 78"
-                        />
-                    </div>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Phone (Optional)</label>
+                            <input
+                                type="tel"
+                                value={formData.phone}
+                                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                                placeholder="+33 6 12 34 56 78"
+                            />
+                        </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input
-                            type="password"
-                            required
-                            minLength={6}
-                            value={formData.password}
-                            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                            placeholder="••••••••"
-                        />
-                        <p className="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
+                        <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input
+                                type="password"
+                                required
+                                minLength={6}
+                                value={formData.password}
+                                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                                className="w-full px-4 py-3 border border-gray-300 rounded-lg"
+                                placeholder="••••••••"
+                            />
+                            <p className="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
+                        </div>
                     </div>
 
                     <button

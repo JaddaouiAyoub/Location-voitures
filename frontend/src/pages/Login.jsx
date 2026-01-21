@@ -22,8 +22,19 @@ const Login = () => {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4">
-            <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 fade-in">
+        <div
+            className="min-h-screen flex items-center justify-center px-4"
+            style={{
+                backgroundImage: 'url(https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=1920&q=80)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                position: 'relative'
+            }}
+        >
+            {/* Dark Overlay */}
+            <div className="absolute inset-0 bg-gray-900" style={{ opacity: 0.7 }}></div>
+
+            <div className="max-w-md w-full bg-white rounded-2xl shadow-2xl p-8 fade-in relative" style={{ zIndex: 10 }}>
                 <div className="text-center mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome Back</h1>
                     <p className="text-gray-600">Sign in to your account</p>
@@ -37,7 +48,7 @@ const Login = () => {
                             required
                             value={formData.email}
                             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg"
                             placeholder="your@email.com"
                         />
                     </div>
@@ -49,7 +60,7 @@ const Login = () => {
                             required
                             value={formData.password}
                             onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                            className="w-full px-4 py-3 border border-gray-300 rounded-lg"
                             placeholder="••••••••"
                         />
                     </div>
